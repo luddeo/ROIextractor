@@ -36,7 +36,7 @@ for(t_sample in names(project)) {
         out_image[tt_line:(tt_line+image_height-1),tt_image_line,3] <- 0
       }
     }
-    writePNG(out_image, paste("temp_b/", t_sample,
+    writePNG(out_image, paste(project[[t_sample]][["check roi folder"]],"/", t_sample,
                               strsplit(basename(t_file), split=".png")[[1]],
                               ".png", sep=""))
   }

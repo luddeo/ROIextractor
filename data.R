@@ -10,36 +10,13 @@
 # where images with drawn ROIs are and where ROI files are written.
 # For additional samples, add another list similar to "Brain 1"
 project <- list(
-  "Brain 1"   = list("peak folder" = "peaks/brain1",
-                     "header folder" = "headers/brain1",
-                     "csv out folder" = "csv/brain1",
-                     "image out folder" = "images/brain1",
-                     "roi images folder" = "roi_images/brain1",
-                     "roi csv folder" = "roi/brain1"),
-  "Brain 1_2"   = list("peak folder" = "peaks/brain1_2",
-                       "header folder" = "headers/brain1_2",
-                       "csv out folder" = "csv/brain1_2",
-                       "image out folder" = "images/brain1_2",
-                       "roi images folder" = "roi_images/brain1_2",
-                       "roi csv folder" = "roi/brain1_2"),
-	"Brain 2"   = list("peak folder" = "peaks/brain2",
-                     "header folder" = "headers/brain2",
-                     "csv out folder" = "csv/brain2",
-                     "image out folder" = "images/brain2",
-                     "roi images folder" = "roi_images/brain2",
-                     "roi csv folder" = "roi/brain2"),
-	"Brain 4"   = list("peak folder" = "peaks/brain4",
-                     "header folder" = "headers/brain4",
-                     "csv out folder" = "csv/brain4",
-                     "image out folder" = "images/brain4",
-                     "roi images folder" = "roi_images/brain4",
-                     "roi csv folder" = "roi/brain4"),
-	"Brain 5"   = list("peak folder" = "peaks/brain5",
-                     "header folder" = "headers/brain5",
-                     "csv out folder" = "csv/brain5",
-                     "image out folder" = "images/brain5",
-                     "roi images folder" = "roi_images/brain5",
-                     "roi csv folder" = "roi/brain5")
+  "Test_data"   = list("peak folder" = "test_data/peaks",
+                     "header folder" = "test_data/headers",
+                     "csv out folder" = "test_data/csv",
+                     "image out folder" = "test_data/images",
+                     "roi images folder" = "test_data/roi_images",
+                     "roi csv folder" = "test_data/roi",
+                     "check roi folder" = "test_data/roi_check")
 )
 
 # The list of COI (Chemical of interest), defining the endogenous m/z,
@@ -55,12 +32,6 @@ mz_list <- list("GABA" = list("end" = 142.0264435, "std" = 144.0389709,
                               "image conc name" = "zmol/pixel"),
                 "Glu"  = list("end" = 186.0162201, "std" = 189.0350189,
                               "conc" = 10*10^(-6), "exp" = 15,
-                              "image conc name" = "fmol/pixel"),
-				"NaGlu"  = list("end" = 170.042, "std" = 173.0610,
-                              "conc" = 10*10^(-6), "exp" = 15,
-                              "image conc name" = "fmol/pixel"),
-				"NaGABA" = list("end" = 126.0526, "std" = 128.0651,
-                              "conc" = 2*10^(-6), "exp" = 15,
                               "image conc name" = "fmol/pixel"))
 
 # The factor that ion image's height is extended with so that the image is
