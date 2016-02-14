@@ -10,7 +10,8 @@
 # where images with drawn ROIs are and where ROI files are written.
 # For additional samples, add another list similar to "Brain 1"
 project <- list(
-  "Test_data"   = list("peak folder" = "test_data/peaks",
+  "Test_data" = list("peak folder" = "test_data/peaks",
+                     "matrix file" = "test_data/test_matrix.csv",
                      "header folder" = "test_data/headers",
                      "csv out folder" = "test_data/csv",
                      "image out folder" = "test_data/images",
