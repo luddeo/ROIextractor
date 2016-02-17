@@ -11,7 +11,7 @@
 # For additional samples, add another list similar to "Brain 1"
 project <- list(
   "Test_data" = list("peak folder" = "test_data/peaks",
-                     "matrix file" = "test_data/test_matrix.csv",
+                     "matrix file" = "test_data/test_sn1_170.comb.csv",
                      "header folder" = "test_data/headers",
                      "csv out folder" = "test_data/csv",
                      "image out folder" = "test_data/images",

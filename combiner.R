@@ -20,7 +20,7 @@ for(t_sample in names(project)) {
       if(length(tt) == 1) {
         print(roi_files[tt])
         t_file <- paste(project[[t_sample]][["roi csv folder"]], roi_files[tt], sep="/")
-        t_roi <- read.roi.csv.file(t_file)
+        t_roi <- read_roi_csv.file(t_file)
         colnames(t_roi) <- paste(tr_name, 1:ncol(t_roi))
         if(is.null(t_comb)) {
           t_comb <- t_roi

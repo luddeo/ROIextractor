@@ -41,13 +41,13 @@ for(t_sample in names(project)) {
   
   IT_list <- c()
   for(t_file in header_files) {
-    t_header <- read.header.file(t_file)
+    t_header <- read_header_file(t_file)
     IT_list <- c(IT_list, t_header[,"IT"])
   }
   IT_cutoff <- min(boxplot.stats(IT_list)$out)
   
   for(t_file in roi_files) {
-    t_roi <- read.roi.csv.file(t_file)
+    t_roi <- read_roi_csv_file(t_file)
     t_test <- (t_roi["IT",] < IT_cutoff)
     t_temp <- strsplit(basename(t_file), t_sample)[[1]][2]
     t_roi_name <- strsplit(t_temp, ".csv")[[1]]

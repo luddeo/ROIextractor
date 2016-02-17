@@ -3,16 +3,23 @@
 # Contains functions that are used in (or expected to) more than one script.   #
 ################################################################################
 
-read.peak.file <- function(l_file) {
+read_peak_file <- function(l_file) {
   return(read.csv(l_file, sep="\t"))
 }
 
-read.header.file <- function(l_file) {
+read_header_file <- function(l_file) {
   return(read.csv(l_file, sep="\t", stringsAsFactors = FALSE))
 }
 
-read.roi.csv.file <- function(l_file) {
+read_roi_csv_file <- function(l_file) {
   return(read.csv(l_file, sep=";"))
+}
+
+read_intensity_matrix <- function(l_name) {
+  return(read.table(l_name, sep="\t",
+                    stringsAsFactors = FALSE,
+                    header = TRUE, row.names = 1,
+                    check.names = FALSE))
 }
 
 get_tolerance <- function(l_peak_matrix) {

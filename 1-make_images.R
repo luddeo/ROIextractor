@@ -30,7 +30,7 @@ make_position_matrix <- function(l_project, l_sample, l_height) {
   for(t_line in seq(header_files)) {
     print(paste("Line:", t_line))
     
-    header_matrix <- read.header.file(header_files[t_line])
+    header_matrix <- read_header_file(header_files[t_line])
     # Calculate the number of pixels needed to add to the line to make it
     # the same length as the longest line
     extra_lines <- max_line_length - nrow(header_matrix)
@@ -74,6 +74,7 @@ make_image_array <- function(l_intensity_matrix) {
   # Scale the intensities to [0,1]
   image_matrix_scaled <- l_intensity_matrix / 
     max(as.numeric(l_intensity_matrix), na.rm=TRUE)
+  image_matrix_scaled[is.na(image_matrix_scaled)] <- 1
   
   image_matrix[,,1] <- 2 * image_matrix_scaled
   image_matrix[image_matrix > 1] <- 1
@@ -81,27 +82,16 @@ make_image_array <- function(l_intensity_matrix) {
   image_matrix_scaled[image_matrix_scaled < 0] <- 0
   image_matrix[,,2] <- image_matrix_scaled
   
-  # Set the NA's (outliers) to white
-  test_matrix <- array(FALSE, c(dim(l_intensity_matrix), 3))
-  test_matrix[,,1] <- is.na(l_intensity_matrix)
-  test_matrix[,,2] <- is.na(l_intensity_matrix)
-  test_matrix[,,3] <- is.na(l_intensity_matrix)
-  image_matrix[test_matrix] <- 1
   return(image_matrix)
 }
 
-load_intensity_values <- function(l_name) {
-  return(read.table(l_name, sep="\t",
-                    stringsAsFactors = FALSE,
-                    header = TRUE, row.names = 1,
-                    check.names = FALSE))
-}
+
 
 for(t_sample in names(project)) {
   print(t_sample)
   
   position_matrix <- make_position_matrix(project, t_sample, image_height)
-  intensity_matrix <- load_intensity_values(project[[t_sample]][["matrix file"]])
+  intensity_matrix <- read_intensity_matrix(project[[t_sample]][["matrix file"]])
   for(t_name in rownames(intensity_matrix)) {
     intensity_values <- as.numeric(intensity_matrix[t_name,])
     names(intensity_values) <- colnames(intensity_matrix)
