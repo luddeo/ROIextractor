@@ -1,23 +1,16 @@
 ################################################################################ 
-#                              make_images.R                                   #
-# Used to construct images for the different samples and chemical of interest  #
-# (COI) combinations. For each sample and COI an image is constructed of the   #
-# endogenous m/z, internal standard m/z, normalized values, mol/pixel values   #
-# and also the IT values and scan number.                                      #
-# For the normalized COI values and mol / pixel values, overlay images are     #
-# constructed with the three channels in an image (Red, Green and Blue)        #
-# contain the image of one COI each.                                           #
+#                              1-make_images.R                                 #
+# Used to construct images for the different samples and the mz values in the  #
+# sample.                                                                      #
 ################################################################################
 
-# Load the required librarys and R-files.
 require(png)
 require(gtools)
-source("data.R")
 source("library.R")
 
 make_position_matrix <- function(l_project, l_sample, l_height) {
-  # Makes a matrix of the scan number on a line (it is the same as the old scan matrix).
-  # Need to add the line too, so that it can be used to make an image
+  # Makes a matrix of the scan number on a line (it is the same as the old scan
+  # matrix). Need to add the line too, so that it can be used to make an image
   # with the correct measure of the m/z at the correct position.
   header_files <- paste(l_project[[l_sample]][["header folder"]],
                         sort(list.files(l_project[[l_sample]][["header folder"]])),
@@ -49,7 +42,8 @@ make_position_matrix <- function(l_project, l_sample, l_height) {
         scan_rep <- 2
         extra_lines <- extra_lines - 1
       }
-      line_vector <- c(line_vector, rep(paste(t_line,t_scan, sep=":"), scan_rep))
+      line_vector <- c(line_vector, rep(paste(t_line, t_scan, sep=":"), 
+                                        scan_rep))
     }
     image_line <- c()
     for(i in 1:l_height) {
@@ -84,8 +78,6 @@ make_image_array <- function(l_intensity_matrix) {
   
   return(image_matrix)
 }
-
-
 
 for(t_sample in names(project)) {
   print(t_sample)

@@ -1,12 +1,11 @@
 ################################################################################ 
-#                               quantify.R                                     #
+#                               3-make_roi_file.R                              #
 # Used to construct files of the ROIs by reading the ROI from images where one #
 # ROI per image is drawn (in Blue).                                            #
 ################################################################################
 
 require(png)
 require(gtools)
-source("data.R")
 source("library.R")
 
 for(t_sample in names(project)) {

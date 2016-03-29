@@ -1,5 +1,10 @@
+################################################################################ 
+#                               2-check_roi.R                                  #
+# Reads the roi images and construct images with the roi area that will be     #
+# used by the later script.                                                    #
+################################################################################
+
 library(png)
-source("data.R")
 
 for(t_sample in names(project)) {
   # Get the path to the ROI images and the CSV files
