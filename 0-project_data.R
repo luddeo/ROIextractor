@@ -10,9 +10,10 @@
 # where images with drawn ROIs are and where ROI files are written.
 # For additional samples, add another list similar to "Brain 1"
 project <- list(
-  "Test_data" = list("matrix file" = "test_data/test_sn1_170.comb.csv",
-                     "header folder" = "test_data/headers",
+  "Test_data" = list("matrix file" = "test_data/test_matrix_sn1.csv",
+                     "header folder" = "test_data/Header_Files",
                      "image out folder" = "test_data/images",
+                     
                      "roi images folder" = "test_data/roi_images",
                      "roi csv folder" = "test_data/roi",
                      "check roi folder" = "test_data/roi_check")
@@ -26,6 +27,7 @@ image_height <- 5
 # how the fixed regions compare to the unfixed regions.
 aa_fix <- TRUE
 
+# Used for targeted data, keep until it is back in the pipeline.
 # The flow rate used in the experiment, needed to calculate the mol / pixel
 # for the COI. The flow rate have to be in l/s.
 ROI_flowrate <- 0.45 # here given in micro l/m.
