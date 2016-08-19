@@ -20,8 +20,17 @@ read_roi_csv_file <- function(l_file) {
 }
 
 read_intensity_matrix <- function(l_name) {
-  return(read.big.matrix(l_name, sep="\t", has.row.names = T,
-                         header=TRUE, type="double"))
+  if(length(unique(lapply(strsplit(readLines(l_name, n=2), split="\t"), length))) == 1) {
+    # fix for problem that the matrix has a element containing "id" in the first row,
+    # giving it the same number of column in all row...
+    # bigmemory seems to expect that there should be one less in header-row if using rownames.
+    t_col.names <- strsplit(readLines(l_name, n=1), split="\t")[[1]][-1]
+    return(read.big.matrix(l_name, sep="\t", has.row.names = T,
+                    type="double", skip=1, col.names = t_col.names))
+  } else {
+    return(read.big.matrix(l_name, sep="\t", has.row.names = T,
+                           header=TRUE, type="double"))
+  }
 }
 
 get_tolerance <- function(l_peak_matrix) {
