@@ -1,11 +1,13 @@
+source("library.R")
+
 TIC_normalization <- FALSE
 
 for(t_sample in names(project)) {
   mean_sd_matrix <- c()
   mean_sd_colnames <- c()
   print(t_sample)
-  roi_image_files <- paste(project[[t_sample]][["roi csv folder"]],
-                           sort(list.files(project[[t_sample]][["roi csv folder"]])), sep="/")
+  roi_image_files <- paste(project[[t_sample]]$roi_csv_folder,
+                           sort(list.files(project[[t_sample]]$roi_csv_folder)), sep="/")
   
   for(t_file in roi_image_files) {
     print(basename(t_file))
