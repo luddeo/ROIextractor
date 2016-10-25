@@ -13,35 +13,26 @@ test_experiment <- make_experiment(l_matrix_file = "test_data/test_matrix_sn1.cs
                             l_roi_image_folder = "test_data/roi_images",
                             l_roi_csv_folder = "test_data/roi",
                             l_roi_check_folder = "test_data/roi_check",
+                            l_report_folder = "test_data",
+                            l_roi_csv_targeted_folder = "test_data/targeted_roi/",
+                            l_targets = list(
+                              "GABA" = list("end" = "142.026445121", "std" = "144.03898427",
+                                            "conc" = 2*10^(-6), "exp" = 15,
+                                            "image conc name" = "fmol/pixel"),
+                              "ACh"  = list("end" = "146.117464508", "std" = "155.173889523",
+                                            "conc" = 0.1*10^(-9), "exp" = 21,
+                                            "image conc name" = "zmol/pixel"),
+                              "NaGlu"  = list("end" = "170.0421363085", "std" = "173.061093191",
+                                              "conc" = 10*10^(-6), "exp" = 15,
+                                              "image conc name" = "fmol/pixel")
+                            ),
                             l_image_height = 5)
 
 project <- list("Test_data" = test_experiment)
 
-
-
-# Should script try to fix Anti-aliasing problems, use check_roi.R script to see
-# how the fixed regions compare to the unfixed regions.
-aa_fix <- TRUE
-
-
-
-# List of different experiments, pointing out the different
-# folders for the peak files, the header files, where csv files are written,
-# where images with drawn ROIs are and where ROI files are written.
-# For additional samples, add another list similar to "Brain 1"
-# project <- list(
-#   "Test_data" = list("matrix file" = "test_data/test_matrix_sn1.csv",
-#                      "header folder" = "test_data/Header_Files",
-#                      "image out folder" = "test_data/images",
-#                      
-#                      "roi images folder" = "test_data/roi_images",
-#                      "roi csv folder" = "test_data/roi",
-#                      "check roi folder" = "test_data/roi_check")
-# )
-
-# The factor that ion image's height is extended with so that the image is
-# not as flat.
-# image_height <- 5
+# Use TIC normailization when calculating the mean and
+# SD for untargeted.
+TIC_normalization <- FALSE
 
 # Should script try to fix Anti-aliasing problems, use check_roi.R script to see
 # how the fixed regions compare to the unfixed regions.

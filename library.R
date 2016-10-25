@@ -7,31 +7,15 @@ require(png)
 require(gtools)
 require(bigmemory)
 
-read_peak_file <- function(l_file) {
-  return(read.csv(l_file, sep="\t"))
-}
-
 read_header_file <- function(l_file) {
   return(read.csv(l_file, sep="\t", stringsAsFactors = FALSE))
 }
 
 read_roi_csv_file <- function(l_file) {
-  return(read.csv(l_file, sep=";"))
-}
-
-get_tolerance <- function(l_peak_matrix) {
-  # Calcualte the values of a and b in FWHM = a * MZ^b by using least squares.
-  # To be used for calculations of tolerance for every m/z value
-  l_x <- log(l_peak_matrix[,"mz"]) # load m/z values
-  l_y <- log(l_peak_matrix[,"fwhm"]) # load FWHM values
-  l_n <- dim(l_peak_matrix)[1]
-  l_xsum <- sum(l_x)
-  l_ysum <- sum(l_y)
-  l_x2sum <- sum(l_x^2)
-  l_xysum <- sum(l_x*l_y)
-  l_b_tolerance <- (l_xysum - l_xsum*l_ysum/l_n)/(l_x2sum - l_xsum*l_xsum/l_n)
-  l_a_tolerance <- exp(l_ysum/l_n - l_b_tolerance*l_xsum/l_n)
-  return(list("A" = l_a_tolerance, "B" = l_b_tolerance))
+  #Would like to use bigmemory, but use apply in code.
+  #return(read.big.matrix(t_file, sep=";", has.row.names = T,
+  #                      header=TRUE, type="double"))
+  return(read.csv(l_file, sep=";", check.names = FALSE))
 }
 
 get_header_data <- function(l_header_files) {
@@ -69,7 +53,8 @@ anti_analising_fix <- function(l_roi_image) {
 
 
 make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, l_roi_image_folder,
-                            l_roi_csv_folder, l_roi_check_folder, l_image_height) {
+                            l_roi_csv_folder, l_roi_check_folder, l_report_folder,
+                            l_roi_csv_targeted_folder = NULL, l_targets = NULL, l_image_height) {
   make_position_matrix <- function(l_sample) {
     # Makes a matrix of the scan number on a line (it is the same as the old scan
     # matrix). Need to add the line too, so that it can be used to make an image
@@ -131,6 +116,22 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
     }
   }
   
+  make_IT_vector <- function(l_sample) {
+    header_files <- paste(l_sample$header_folder,
+                          sort(list.files(l_sample$header_folder)),
+                          sep="/")
+    l_position_vector <- c()
+    l_IT_vector <- c()
+    for(t_line in seq(header_files)) {
+      header_matrix <- read_header_file(header_files[t_line])
+      
+      l_position_vector <- c(l_position_vector, paste(t_line,header_matrix[,"SN"], sep=":"))
+      l_IT_vector <- c(l_IT_vector, header_matrix[,"IT"])
+    }
+    names(l_IT_vector) <- l_position_vector
+    return(l_IT_vector)
+  }
+  
   data_env <- new.env()
   data_env$header_folder <- l_header_folder
   data_env$image_out_folder <- l_image_out_folder
@@ -138,10 +139,13 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
   data_env$roi_csv_folder <- l_roi_csv_folder
   data_env$roi_check_folder <- l_roi_check_folder
   data_env$image_height <- l_image_height
-  
+  data_env$roi_csv_targeted_folder <- l_roi_csv_targeted_folder
+  data_env$targets <- l_targets
+  data_env$report_folder <- l_report_folder
   
   data_env$position_matrix <- make_position_matrix(data_env)
   data_env$intensity_matrix <- read_intensity_matrix(l_matrix_file)
+  data_env$IT_vector <- make_IT_vector(data_env)
   
   class(data_env) <- "Nano DESI experiment"
   return(data_env)

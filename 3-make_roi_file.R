@@ -11,23 +11,19 @@ for(t_sample in names(project)) {
   # intensity matrix.
   roi_image_files <- paste(project[[t_sample]]$roi_image_folder,
                            sort(list.files(project[[t_sample]]$roi_image_folder)), sep="/")
-  #position_matrix <- make_position_matrix(project[[t_sample]])
-  #intensity_matrix <- read_intensity_matrix(project[[t_sample]]$matrix_file)
-  
+
   for(t_file in roi_image_files) {
     print(t_file)
     # Read the ROI image
     roi_image <- readPNG(t_file, native=FALSE)
     
-    # Fix anti-analysis problem, not garantied to work propertly
+    # Fix anti-analising problem, not garantied to work propertly
     if(aa_fix) {
       roi_image <- anti_analising_fix(roi_image)
     }
     # Get the pixel's names with non-zero blue value, which is the ROI.
     roi_pixels <-  project[[t_sample]]$position_matrix[roi_image[,,3] > 0]
     roi_data <- project[[t_sample]]$intensity_matrix[,unique(roi_pixels)]
-    # The quantification has been removed for now, so it is only
-    # untargeted.
 
     write.table(roi_data, paste(project[[t_sample]]$roi_csv_folder, "/",
                                   t_sample, " ", strsplit(basename(t_file),
