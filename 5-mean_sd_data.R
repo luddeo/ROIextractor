@@ -1,5 +1,6 @@
 source("library.R")
 #TODO: add something that filteres out high IT values
+# remove_high_it <- FALSE
 
 make_mean_sd_matrix <- function(l_folder, l_sample, l_TIC_norm = FALSE) {
   mean_sd_matrix <- c()

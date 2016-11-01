@@ -7,10 +7,6 @@ require(png)
 require(gtools)
 require(bigmemory)
 
-read_header_file <- function(l_file) {
-  return(read.csv(l_file, sep="\t", stringsAsFactors = FALSE))
-}
-
 read_roi_csv_file <- function(l_file) {
   #Would like to use bigmemory, but use apply in code.
   #return(read.big.matrix(t_file, sep=";", has.row.names = T,
@@ -59,16 +55,13 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
     # Makes a matrix of the scan number on a line (it is the same as the old scan
     # matrix). Need to add the line too, so that it can be used to make an image
     # with the correct measure of the m/z at the correct position.
-    header_files <- paste(l_sample$header_folder,
-                          sort(list.files(l_sample$header_folder)),
-                          sep="/")
     
     # Get the max number of scans in a line.
-    max_line_length <- get_header_data(header_files)[["max line"]]
+    max_line_length <- max(table(l_sample$header_matrix$line))
     position_matrix <- c()
     
-    for(t_line in seq(header_files)) {
-      header_matrix <- read_header_file(header_files[t_line])
+    for(t_line in sort(unique(l_sample$header_matrix$line))) {
+      header_matrix <- l_sample$header_matrix[l_sample$header_matrix$line == t_line,]
       # Calculate the number of pixels needed to add to the line to make it
       # the same length as the longest line
       extra_lines <- max_line_length - nrow(header_matrix)
@@ -116,24 +109,21 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
     }
   }
   
-  make_IT_vector <- function(l_sample) {
-    header_files <- paste(l_sample$header_folder,
-                          sort(list.files(l_sample$header_folder)),
+  make_header_matrix <- function(l_header_dir) {
+    header_files <- paste(l_header_dir,
+                          sort(list.files(l_header_dir)),
                           sep="/")
-    l_position_vector <- c()
-    l_IT_vector <- c()
+    header_matrix <- c()
     for(t_line in seq(header_files)) {
-      header_matrix <- read_header_file(header_files[t_line])
-      
-      l_position_vector <- c(l_position_vector, paste(t_line,header_matrix[,"SN"], sep=":"))
-      l_IT_vector <- c(l_IT_vector, header_matrix[,"IT"])
+      l_file <- header_files[t_line]
+      header_matrix_part <- read.csv(l_file, sep="\t", stringsAsFactors = FALSE)
+      header_matrix_part$line <- t_line
+      header_matrix <- rbind(header_matrix, header_matrix_part)
     }
-    names(l_IT_vector) <- l_position_vector
-    return(l_IT_vector)
+    return(header_matrix)
   }
   
   data_env <- new.env()
-  data_env$header_folder <- l_header_folder
   data_env$image_out_folder <- l_image_out_folder
   data_env$roi_image_folder <- l_roi_image_folder
   data_env$roi_csv_folder <- l_roi_csv_folder
@@ -142,11 +132,11 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
   data_env$roi_csv_targeted_folder <- l_roi_csv_targeted_folder
   data_env$targets <- l_targets
   data_env$report_folder <- l_report_folder
-  
+
+  data_env$header_matrix <- make_header_matrix(l_header_folder)  
   data_env$position_matrix <- make_position_matrix(data_env)
   data_env$intensity_matrix <- read_intensity_matrix(l_matrix_file)
-  data_env$IT_vector <- make_IT_vector(data_env)
-  
+
   class(data_env) <- "Nano DESI experiment"
   return(data_env)
 }

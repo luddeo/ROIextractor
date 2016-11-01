@@ -11,7 +11,10 @@ for(t_sample in names(project)) {
                        nchar(basename(t_file))-4)
     roi_data <- as.matrix(read_roi_csv_file(t_file))
     value_order <- colnames(roi_data)
-    t_IT <- project[[t_sample]]$IT_vector[value_order]
+    t_all_it <- project[[t_sample]]$header_matrix[,"IT"]
+    names(t_all_it) <- paste(project[[t_sample]]$header_matrix[,"line"],project[[t_sample]]$header_matrix[,"SN"], sep=":")
+    t_IT <- t_all_it[value_order]
+
     targeted_matrix <- c()
     targeted_rownames <- c()
     for(t_coi in names(project[[t_sample]]$targets)) {
@@ -19,8 +22,6 @@ for(t_sample in names(project)) {
       t_exp  <- 10^(project[[t_sample]]$targets[[t_coi]]$exp)
       t_mz_end <- project[[t_sample]]$targets[[t_coi]]$end
       t_mz_std <- project[[t_sample]]$targets[[t_coi]]$std
-      
-      
 
       t_end <- roi_data[t_mz_end,]
       t_std <- roi_data[t_mz_std,]
