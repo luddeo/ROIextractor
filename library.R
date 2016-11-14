@@ -4,8 +4,10 @@
 ################################################################################
 
 require(png)
-require(gtools)
 require(bigmemory)
+
+# contains apply on big matrixes etc. Might be usefull
+#require(biganalytics)
 
 read_roi_csv_file <- function(l_file) {
   #Would like to use bigmemory, but use apply in code.
@@ -95,17 +97,29 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
     return(position_matrix)
   }
   
-  read_intensity_matrix <- function(l_name) {
+  read_intensity_matrix <- function(l_name, l_position_matrix) {
+    int_matrix <- NULL
     if(length(unique(lapply(strsplit(readLines(l_name, n=2), split="\t"), length))) == 1) {
       # fix for problem that the matrix has a element containing "id" in the first row,
       # giving it the same number of column in all row...
       # bigmemory seems to expect that there should be one less in header-row if using rownames.
       t_col.names <- strsplit(readLines(l_name, n=1), split="\t")[[1]][-1]
-      return(read.big.matrix(l_name, sep="\t", has.row.names = T,
-                             type="double", skip=1, col.names = t_col.names))
+      int_matrix <- read.big.matrix(l_name, sep="\t", has.row.names = T,
+                                    type="double", skip=1, col.names = t_col.names)
     } else {
-      return(read.big.matrix(l_name, sep="\t", has.row.names = T,
-                             header=TRUE, type="double"))
+      int_matrix <- read.big.matrix(l_name, sep="\t", has.row.names = T,
+                                    header=TRUE, type="double")
+    }
+    # In case the matrix is missing columns, add columns with zeros.
+    unique(c(l_position_matrix)) -> t_all_scans
+    la_missing <- setdiff(t_all_scans,colnames(int_matrix))
+    if(length(la_missing) > 0) {
+      new_int_matrix <- big.matrix(nrow = nrow(int_matrix), ncol = ncol(int_matrix) + length(la_missing),
+                                   init=0, dimnames = list(rownames(int_matrix), c(colnames(int_matrix), la_missing)))
+      new_int_matrix[seq(nrow(int_matrix)),seq(ncol(int_matrix))] <- int_matrix[,]
+      return(new_int_matrix)
+    } else {
+      return(int_matrix)
     }
   }
   
@@ -135,8 +149,19 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
 
   data_env$header_matrix <- make_header_matrix(l_header_folder)  
   data_env$position_matrix <- make_position_matrix(data_env)
-  data_env$intensity_matrix <- read_intensity_matrix(l_matrix_file)
+  data_env$intensity_matrix <- read_intensity_matrix(l_matrix_file, data_env$position_matrix)
+  
+  missing_columns <- setdiff(unique(data_env$position_matrix),colnames(data_env$intensity_matrix))
+  if(length(missing_columns) > 0) {
+    # Need add missing columns as columns containing zeros,
+    # might need to make a new matrix with only zeros and conatining
+    # more columns. Then add the values in the columns that we
+    # had values for.
+    print(missing_columns)
+  }
 
   class(data_env) <- "Nano DESI experiment"
   return(data_env)
 }
+
+

@@ -33,8 +33,6 @@ make_image_array <- function(l_intensity_matrix) {
 for(t_sample in names(project)) {
   print(t_sample)
 
-  #position_matrix <- make_position_matrix(project[[t_sample]])
-  #intensity_matrix <- read_intensity_matrix(project[[t_sample]]$matrix_file)
   for(t_name in rownames(project[[t_sample]]$intensity_matrix)) {
     intensity_values <- as.numeric(project[[t_sample]]$intensity_matrix[t_name,])
     names(intensity_values) <- colnames(project[[t_sample]]$intensity_matrix)
@@ -48,20 +46,3 @@ for(t_sample in names(project)) {
     }
   }
 }
-
-# Old without removing the "bad" images (the ones that will be uniformly coloured), the above does not work thou... need to fix it.
-# for(t_sample in names(project)) {
-#   print(t_sample)
-# 
-#   position_matrix <- make_position_matrix(project, t_sample, image_height)
-#   intensity_matrix <- read_intensity_matrix(project[[t_sample]][["matrix file"]])
-#   for(t_name in rownames(intensity_matrix)) {
-#     intensity_values <- as.numeric(intensity_matrix[t_name,])
-#     names(intensity_values) <- colnames(intensity_matrix)
-# 
-#     writePNG(make_image_array(make_intensity_image_matrix(position_matrix,
-#                                                           intensity_values)),
-#              paste(project[[t_sample]][["image out folder"]], "/",
-#                    t_name, ".png", sep=""))
-#   }
-# }
