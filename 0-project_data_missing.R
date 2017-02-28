@@ -8,7 +8,7 @@
 source("library.R")
 
 test_experiment <- make_experiment(l_matrix_file = "test_data_missing/test_matrix_sn1_missing_columns.csv",
-                                   l_header_folder = "test_data_missing/Header_Files",
+                                   l_header_folder = "test_data/Header_Files/",
                                    l_image_out_folder = "test_data_missing/images",
                                    l_roi_image_folder = "test_data_missing/roi_images",
                                    l_roi_csv_folder = "test_data_missing/roi",
@@ -29,6 +29,9 @@ test_experiment <- make_experiment(l_matrix_file = "test_data_missing/test_matri
                                    l_image_height = 5)
 
 project <- list("Test_data_missing" = test_experiment)
+
+# Filter away large IT scans when calculating mean and SD.
+remove_high_it <- TRUE
 
 # Use TIC normailization when calculating the mean and
 # SD for untargeted.

@@ -30,6 +30,9 @@ test_experiment <- make_experiment(l_matrix_file = "test_data/test_matrix_sn1.cs
 
 project <- list("Test_data" = test_experiment)
 
+# Filter away large IT scans when calculating mean and SD.
+remove_high_it <- TRUE
+
 # Use TIC normailization when calculating the mean and
 # SD for untargeted.
 TIC_normalization <- FALSE
