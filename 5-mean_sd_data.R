@@ -11,6 +11,7 @@ make_mean_sd_matrix <- function(l_folder, l_sample, l_TIC_norm = FALSE) {
                        nchar(t_sample)+2,
                        nchar(basename(t_file))-4)
     roi_data <- as.matrix(read_roi_csv_file(t_file)) # ADDED as.matrix HERE INCAS WANT TO CHECK.
+    t_IT_limit <- NA 
     if(l_TIC_norm) {
       apply(roi_data,2,mean, na.rm = TRUE) -> tt
       t(apply(roi_data,1,function(x){x/tt})) -> roi_data
@@ -25,8 +26,14 @@ make_mean_sd_matrix <- function(l_folder, l_sample, l_TIC_norm = FALSE) {
     }
     
     
-    mean_sd_matrix <- cbind(mean_sd_matrix, apply(roi_data,1,mean, na.rm = TRUE), apply(roi_data,1,sd, na.rm = TRUE))
-    mean_sd_colnames <- c(mean_sd_colnames, paste(roi_name, "mean"),paste(roi_name,"sd"))
+    mean_sd_matrix <- cbind(mean_sd_matrix, apply(roi_data,1,mean, na.rm = TRUE),
+                            apply(roi_data,1,sd, na.rm = TRUE), ncol(roi_data),
+                            format(apply(roi_data>0,1,mean), digits=5), t_IT_limit,
+                            TIC_normalization)
+    mean_sd_colnames <- c(mean_sd_colnames, paste(roi_name, "mean"),paste(roi_name,"sd"),
+                          paste(roi_name,"#scans"), paste(roi_name,"% non-zero scans"),
+                          paste(roi_name," IT cutoff"), paste(roi_name," TIC normalized"))
+
   }
   colnames(mean_sd_matrix) <- mean_sd_colnames
   return(mean_sd_matrix)
