@@ -28,7 +28,7 @@ make_mean_sd_matrix <- function(l_folder, l_sample, l_TIC_norm = FALSE) {
     
     mean_sd_matrix <- cbind(mean_sd_matrix, apply(roi_data,1,mean, na.rm = TRUE),
                             apply(roi_data,1,sd, na.rm = TRUE), ncol(roi_data),
-                            format(apply(roi_data>0,1,mean), digits=5), t_IT_limit,
+                            format(apply({temp<-(roi_data>0);temp[is.na(temp)]<-0;temp},1,mean, na.rm=TRUE), digits=5), t_IT_limit,
                             TIC_normalization)
     mean_sd_colnames <- c(mean_sd_colnames, paste(roi_name, "mean"),paste(roi_name,"sd"),
                           paste(roi_name,"#scans"), paste(roi_name,"% non-zero scans"),
