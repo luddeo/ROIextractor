@@ -50,9 +50,7 @@ anti_analising_fix <- function(l_roi_image) {
 }
 
 
-make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, l_roi_image_folder,
-                            l_roi_csv_folder, l_roi_check_folder, l_report_folder,
-                            l_roi_csv_targeted_folder = NULL, l_targets = NULL, l_image_height) {
+make_experiment <- function(l_matrix_file, l_header_folder, l_image_height) {
   make_position_matrix <- function(l_sample) {
     # Makes a matrix of the scan number on a line (it is the same as the old scan
     # matrix). Need to add the line too, so that it can be used to make an image
@@ -138,14 +136,7 @@ make_experiment <- function(l_matrix_file, l_header_folder, l_image_out_folder, 
   }
   
   data_env <- new.env()
-  data_env$image_out_folder <- l_image_out_folder
-  data_env$roi_image_folder <- l_roi_image_folder
-  data_env$roi_csv_folder <- l_roi_csv_folder
-  data_env$roi_check_folder <- l_roi_check_folder
   data_env$image_height <- l_image_height
-  data_env$roi_csv_targeted_folder <- l_roi_csv_targeted_folder
-  data_env$targets <- l_targets
-  data_env$report_folder <- l_report_folder
 
   data_env$header_matrix <- make_header_matrix(l_header_folder)  
   data_env$position_matrix <- make_position_matrix(data_env)

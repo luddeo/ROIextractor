@@ -41,7 +41,7 @@ for(t_sample in names(project)) {
       la_intensia <- make_intensity_image_matrix(project[[t_sample]]$position_matrix,
                                                  intensity_values)
       writePNG(make_image_array(la_intensia),
-               paste(project[[t_sample]]$image_out_folder, "/",
+               paste(image_out_folder, "/",
                      t_name, ".png", sep=""))
     }
   }

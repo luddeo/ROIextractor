@@ -2,8 +2,8 @@
 
 for(t_sample in names(project)) {
   print(t_sample)
-  roi_image_files <- paste(project[[t_sample]]$roi_csv_folder,
-                           sort(list.files(project[[t_sample]]$roi_csv_folder)), sep="/")
+  roi_image_files <- paste(roi_csv_folder,
+                           sort(list.files(roi_csv_folder)), sep="/")
   for(t_file in roi_image_files) {
     print(basename(t_file))
     roi_name <- substr(basename(t_file),
@@ -17,11 +17,11 @@ for(t_sample in names(project)) {
 
     targeted_matrix <- c()
     targeted_rownames <- c()
-    for(t_coi in names(project[[t_sample]]$targets)) {
-      t_conc <- project[[t_sample]]$targets[[t_coi]]$conc
-      t_exp  <- 10^(project[[t_sample]]$targets[[t_coi]]$exp)
-      t_mz_end <- project[[t_sample]]$targets[[t_coi]]$end
-      t_mz_std <- project[[t_sample]]$targets[[t_coi]]$std
+    for(t_coi in names(targets)) {
+      t_conc <- targets[[t_coi]]$conc
+      t_exp  <- 10^(targets[[t_coi]]$exp)
+      t_mz_end <- targets[[t_coi]]$end
+      t_mz_std <- targets[[t_coi]]$std
 
       t_end <- roi_data[t_mz_end,]
       t_std <- roi_data[t_mz_std,]
@@ -43,7 +43,7 @@ for(t_sample in names(project)) {
                              paste(t_coi, c("Norm", "Conc", "Amount")))
     }
     rownames(targeted_matrix) <- targeted_rownames
-    write.table(targeted_matrix, paste(project[[t_sample]]$roi_csv_targeted_folder,
+    write.table(targeted_matrix, paste(roi_csv_targeted_folder,
                                        paste(substr(basename(t_file),1,nchar(t_file)-4),"targeted", ".csv", sep="_"), sep="/") , sep=";")
   }
 }

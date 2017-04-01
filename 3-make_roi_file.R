@@ -9,8 +9,8 @@ source("library.R")
 for(t_sample in names(project)) {
   # Get the path to the ROI images and load the position matrix and
   # intensity matrix.
-  roi_image_files <- paste(project[[t_sample]]$roi_image_folder,
-                           sort(list.files(project[[t_sample]]$roi_image_folder)), sep="/")
+  roi_image_files <- paste(roi_image_folder,
+                           sort(list.files(roi_image_folder)), sep="/")
 
   for(t_file in roi_image_files) {
     print(t_file)
@@ -25,7 +25,7 @@ for(t_sample in names(project)) {
     roi_pixels <-  project[[t_sample]]$position_matrix[roi_image[,,3] > 0]
     roi_data <- project[[t_sample]]$intensity_matrix[,unique(roi_pixels)]
 
-    write.table(roi_data, paste(project[[t_sample]]$roi_csv_folder, "/",
+    write.table(roi_data, paste(roi_csv_folder, "/",
                                   t_sample, " ", strsplit(basename(t_file),
                                                           split=".png")[[1]],
                                   ".csv", sep=""), sep=";")

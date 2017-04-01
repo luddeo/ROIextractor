@@ -8,8 +8,8 @@ source("library.R")
 
 for(t_sample in names(project)) {
   # Get the path to the ROI images and the CSV files
-  roi_image_files <- paste(project[[t_sample]]$roi_image_folder,
-                           sort(list.files(project[[t_sample]]$roi_image_folder)), sep="/")
+  roi_image_files <- paste(roi_image_folder,
+                           sort(list.files(roi_image_folder)), sep="/")
   
   for(t_file in roi_image_files) {
     print(t_file)
@@ -41,7 +41,7 @@ for(t_sample in names(project)) {
         out_image[tt_line:(tt_line+project[[t_sample]]$image_height-1),tt_image_line,3] <- 0
       }
     }
-    writePNG(out_image, paste(project[[t_sample]]$roi_check_folder,"/", t_sample,
+    writePNG(out_image, paste(roi_check_folder,"/", t_sample,
                               strsplit(basename(t_file), split=".png")[[1]],
                               ".png", sep=""))
   }

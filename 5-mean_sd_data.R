@@ -40,10 +40,10 @@ make_mean_sd_matrix <- function(l_folder, l_sample, l_TIC_norm = FALSE) {
 }
 
 for(t_sample in names(project)) {
-  write.table(make_mean_sd_matrix(project[[t_sample]]$roi_csv_folder, t_sample, TIC_normalization),
-              paste(project[[t_sample]]$report_folder,paste(t_sample,"_untargeted_mean_sd.csv"), sep="/"), sep=";")
-  if(!is.null(project[[t_sample]]$roi_csv_targeted_folder)) {
-    write.table(make_mean_sd_matrix(project[[t_sample]]$roi_csv_targeted_folder, t_sample),
-                paste(project[[t_sample]]$report_folder,paste(t_sample,"_targeted_mean_sd.csv"), sep="/"), sep=";")
+  write.table(make_mean_sd_matrix(roi_csv_folder, t_sample, TIC_normalization),
+              paste(report_folder,paste(t_sample,"_untargeted_mean_sd.csv"), sep="/"), sep=";")
+  if(!is.null(roi_csv_targeted_folder)) {
+    write.table(make_mean_sd_matrix(roi_csv_targeted_folder, t_sample),
+                paste(report_folder,paste(t_sample,"_targeted_mean_sd.csv"), sep="/"), sep=";")
   }
 }
