@@ -18,7 +18,8 @@ for(t_sample in names(project)) {
     roi_image <- readPNG(t_file, native=FALSE)
     
     # Fix anti-analising problem, not garantied to work propertly
-    if(aa_fix) {
+    # Was a variable, but do alwaws anyway.
+    if(TRUE) {
       roi_image <- anti_analising_fix(roi_image)
     }
     # Get the pixel's names with non-zero blue value, which is the ROI.

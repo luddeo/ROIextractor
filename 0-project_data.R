@@ -20,26 +20,37 @@ project <- list("Test_data" = test_experiment)
 image_out_folder <- "test_data/images"
 
 # The foler where the ROI images are.
-roi_image_folder = "test_data/roi_images"
+roi_image_folder <- "test_data/roi_images"
 
 # The folder to put the "checked" ion images.
-roi_check_folder = "test_data/roi_check"
+roi_check_folder <- "test_data/roi_check"
 
-# To be fixed later.
-roi_csv_folder = "test_data/roi"
-report_folder = "test_data"
-roi_csv_targeted_folder = "test_data/targeted_roi/"
-targets = list(
+# The folder where ROI files are saved.
+roi_csv_folder <- "test_data/roi"
+
+# The folder to put targeted ROI files.
+roi_csv_targeted_folder <- "test_data/targeted_roi/"
+
+# The list of targeted molecules:
+# "end": the m/z of endogenous molecule.
+# "std": the m/z of internal standard.
+# "conc": the concentration of internal standard.
+# "exp": amount is multiplied by 10^exp to get bigger numbers,
+#        usually to put it in a specific range, t.ex. fmol.
+targets <- list(
   "GABA" = list("end" = "142.026445121", "std" = "144.03898427",
-                "conc" = 2*10^(-6), "exp" = 15,
-                "image conc name" = "fmol/pixel"),
+                "conc" = 2*10^(-6), "exp" = 15),
+  #"image conc name" = "fmol/pixel"),
   "ACh"  = list("end" = "146.117464508", "std" = "155.173889523",
-                "conc" = 0.1*10^(-9), "exp" = 21,
-                "image conc name" = "zmol/pixel"),
+                "conc" = 0.1*10^(-9), "exp" = 21),
+  #"image conc name" = "zmol/pixel"),
   "NaGlu"  = list("end" = "170.0421363085", "std" = "173.061093191",
-                  "conc" = 10*10^(-6), "exp" = 15,
-                  "image conc name" = "fmol/pixel")
+                  "conc" = 10*10^(-6), "exp" = 15)
+  #"image conc name" = "fmol/pixel")
 )
+
+# The folder where reports are written.
+report_folder <- "test_data"
 
 
 
@@ -52,10 +63,6 @@ remove_high_it <- FALSE
 # Use TIC normailization when calculating the mean and
 # SD for untargeted.
 TIC_normalization <- FALSE
-
-# Should script try to fix Anti-aliasing problems, use check_roi.R script to see
-# how the fixed regions compare to the unfixed regions.
-aa_fix <- TRUE
 
 # Used for targeted data, keep until it is back in the pipeline.
 # The flow rate used in the experiment, needed to calculate the mol / pixel
